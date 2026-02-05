@@ -108,3 +108,21 @@ const techObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.2 });
 
 document.querySelectorAll('.reveal').forEach(el => techObserver.observe(el));
+// Vanilla JS: FAQ Accordion
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+    const trigger = item.querySelector('.faq-item__trigger');
+    
+    trigger.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        
+        // Close all other items (optional, but cleaner)
+        faqItems.forEach(i => i.classList.remove('active'));
+        
+        // Toggle current item
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    });
+});

@@ -778,3 +778,76 @@ h4 {
         height: 350px;
     }
 }
+/* FAQ Section */
+.faq {
+    padding: 100px 0;
+}
+
+.faq__header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.faq__content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.faq-item__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    transition: var(--transition);
+}
+
+.faq-item__trigger:hover {
+    color: var(--accent-color);
+}
+
+.faq-item__icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s ease;
+    color: var(--accent-color);
+}
+
+.faq-item__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease;
+}
+
+.faq-item__content p {
+    padding-bottom: 25px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* State when open */
+.faq-item.active .faq-item__trigger {
+    color: var(--accent-color);
+}
+
+.faq-item.active .faq-item__icon {
+    transform: rotate(45deg);
+}
+
+.faq-item.active .faq-item__content {
+    max-height: 200px;
+    /* Достаточно для текста */
+}
