@@ -1,128 +1,163 @@
-// Initialize Icons
-lucide.createIcons();
-
-// Header scroll effect
-const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        header.classList.add('header--scrolled');
-    } else {
-        header.classList.remove('header--scrolled');
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // === 1. ИНИЦИАЛИЗАЦИЯ ИКОНОК (LUCIDE) ===
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
     }
-});
 
-// Basic GSAP Setup
-gsap.registerPlugin(ScrollTrigger);
+    // === 2. МОБИЛЬНОЕ МЕНЮ (BURGER) ===
+    const burger = document.querySelector('.burger');
+    const overlay = document.querySelector('.mobile-overlay');
+    const navLinks = document.querySelectorAll('.mobile-nav__list a');
 
-console.log('Project <?= $domainTitle ?> initialized');
-// GSAP Hero Animation
-const tl = gsap.timeline();
+    if (burger && overlay) {
+        const toggleMenu = () => {
+            burger.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+        };
 
-tl.from(".hero__badge", {
-    y: 20,
-    opacity: 0,
-    duration: 0.6,
-    ease: "power3.out"
-})
-.from(".hero__title", {
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-    ease: "power3.out"
-}, "-=0.4")
-.from(".hero__text", {
-    y: 30,
-    opacity: 0,
-    duration: 0.8
-}, "-=0.6")
-.from(".hero__btns", {
-    y: 20,
-    opacity: 0,
-    duration: 0.6
-}, "-=0.6")
-.from(".visual-image", {
-    scale: 0.9,
-    opacity: 0,
-    duration: 1,
-    ease: "expo.out"
-}, "-=0.8")
-.from(".visual-card", {
-    x: (i) => i === 0 ? -50 : 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.2
-}, "-=0.5");
+        burger.addEventListener('click', toggleMenu);
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (overlay.classList.contains('active')) toggleMenu();
+            });
+        });
+    }
 
-// Mouse Move Parallax for Cards
-document.addEventListener("mousemove", (e) => {
-    const x = (window.innerWidth / 2 - e.pageX) / 50;
-    const y = (window.innerHeight / 2 - e.pageY) / 50;
+    // === 3. ПЛАВНЫЙ АККОРДЕОН FAQ (БЕЗ КОНФЛИКТОВ) ===
+    const faqItems = document.querySelectorAll('.faq-item');
     
-    gsap.to(".visual-card--1", { x: x, y: y, duration: 1 });
-    gsap.to(".visual-card--2", { x: -x, y: -y, duration: 1 });
-});
+    faqItems.forEach(item => {
+        const trigger = item.querySelector('.faq-item__trigger');
+        const content = item.querySelector('.faq-item__content');
 
-// Vanilla JS: Intersection Observer for scroll animations
-const observerOptions = {
-    threshold: 0.1
-};
+        if (trigger && content) {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isActive = item.classList.contains('active');
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
+                // Закрываем все остальные
+                faqItems.forEach(el => {
+                    el.classList.remove('active');
+                    el.querySelector('.faq-item__content').style.height = '0px';
+                });
+
+                // Если текущий был закрыт — открываем его
+                if (!isActive) {
+                    item.classList.add('active');
+                    // Устанавливаем высоту в пикселях для плавной анимации
+                    content.style.height = content.scrollHeight + 'px';
+                }
+            });
         }
     });
-}, observerOptions);
 
-document.querySelectorAll('.reveal').forEach(el => {
-    observer.observe(el);
-});
+    // === 4. ТАБЫ В СЕКЦИИ ТЕХНОЛОГИИ ===
+    const techItems = document.querySelectorAll('.tech__item');
+    const techScreens = document.querySelectorAll('.tech__screen');
 
-// Update Lucide icons after adding new content
-lucide.createIcons();
-// Vanilla JS: Technology Tabs
-const techItems = document.querySelectorAll('.tech__item');
-const techScreens = document.querySelectorAll('.tech__screen');
+    techItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const targetId = item.getAttribute('data-target');
+            
+            techItems.forEach(i => i.classList.remove('active'));
+            techScreens.forEach(s => s.classList.remove('active'));
 
-techItems.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        // Remove active class from all
-        techItems.forEach(i => i.classList.remove('active'));
-        techScreens.forEach(s => s.classList.remove('active'));
-
-        // Add active to current
-        item.classList.add('active');
-        const targetId = item.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
-    });
-});
-
-// Дополним Observer для тех-секции (если еще не добавлен в прошлом шаге)
-const techObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
-    });
-}, { threshold: 0.2 });
-
-document.querySelectorAll('.reveal').forEach(el => techObserver.observe(el));
-// Vanilla JS: FAQ Accordion
-const faqItems = document.querySelectorAll('.faq-item');
-
-faqItems.forEach(item => {
-    const trigger = item.querySelector('.faq-item__trigger');
-    
-    trigger.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
-        
-        // Close all other items (optional, but cleaner)
-        faqItems.forEach(i => i.classList.remove('active'));
-        
-        // Toggle current item
-        if (!isActive) {
             item.classList.add('active');
+            document.getElementById(targetId)?.classList.add('active');
+        });
+    });
+
+    // === 5. ФОРМА КОНТАКТОВ С КАПЧЕЙ ===
+    const contactForm = document.getElementById('main-form');
+    
+    if (contactForm) {
+        const phoneInput = document.getElementById('phone-input');
+        const captchaTask = document.getElementById('captcha-task');
+        const captchaInput = document.getElementById('captcha-input');
+        const successMsg = document.getElementById('form-success');
+        
+        // Математическая капча
+        const n1 = Math.floor(Math.random() * 8) + 2;
+        const n2 = Math.floor(Math.random() * 6) + 1;
+        const correctSum = n1 + n2;
+        if (captchaTask) captchaTask.innerText = `${n1} + ${n2}`;
+
+        // Валидация телефона (только цифры и +)
+        phoneInput?.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9+]/g, '');
+        });
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (parseInt(captchaInput.value) !== correctSum) {
+                alert('Неверный ответ в капче!');
+                return;
+            }
+
+            const btn = contactForm.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = 'Отправка...';
+
+            // Имитация AJAX
+            setTimeout(() => {
+                contactForm.style.display = 'none';
+                if (successMsg) {
+                    successMsg.style.display = 'flex';
+                    lucide.createIcons();
+                }
+            }, 1500);
+        });
+    }
+
+    // === 6. COOKIE POPUP (LOCAL STORAGE) ===
+    const cookiePopup = document.getElementById('cookie-popup');
+    const cookieAccept = document.getElementById('cookie-accept');
+
+    if (cookiePopup && !localStorage.getItem('cookies_accepted')) {
+        setTimeout(() => {
+            cookiePopup.classList.add('visible');
+        }, 3000);
+    }
+
+    cookieAccept?.addEventListener('click', () => {
+        localStorage.setItem('cookies_accepted', 'true');
+        cookiePopup.classList.remove('visible');
+    });
+
+    // === 7. INTERSECTION OBSERVER (АНИМАЦИЯ REVEAL) ===
+    // Важно: Observer запускается после всех остальных расчетов
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    if (revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+    }
+
+    // === 8. HEADER SCROLL ===
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 40) {
+            header?.classList.add('header--scrolled');
+        } else {
+            header?.classList.remove('header--scrolled');
         }
+    });
+
+    // Пересчет высоты аккордеона при изменении окна (чтобы не ехал текст)
+    window.addEventListener('resize', () => {
+        const activeFAQ = document.querySelector('.faq-item.active .faq-item__content');
+        if (activeFAQ) activeFAQ.style.height = activeFAQ.scrollHeight + 'px';
     });
 });

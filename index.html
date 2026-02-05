@@ -263,7 +263,7 @@
         </div>
 
         <div class="faq__content">
-            <div class="faq-item reveal">
+            <div class="faq-item">
                 <button class="faq-item__trigger">
                     <span>Как быстро я смогу увидеть первый результат?</span>
                     <i data-lucide="plus" class="faq-item__icon"></i>
@@ -274,7 +274,7 @@
                 </div>
             </div>
 
-            <div class="faq-item reveal">
+            <div class="faq-item">
                 <button class="faq-item__trigger">
                     <span>Нужен ли опыт в программировании для старта?</span>
                     <i data-lucide="plus" class="faq-item__icon"></i>
@@ -285,7 +285,7 @@
                 </div>
             </div>
 
-            <div class="faq-item reveal">
+            <div class="faq-item">
                 <button class="faq-item__trigger">
                     <span>Доступна ли платформа за пределами Франции и ЕС?</span>
                     <i data-lucide="plus" class="faq-item__icon"></i>
@@ -296,7 +296,7 @@
                 </div>
             </div>
 
-            <div class="faq-item reveal">
+            <div class="faq-item">
                 <button class="faq-item__trigger">
                     <span>Как работает программа пассивного дохода?</span>
                     <i data-lucide="plus" class="faq-item__icon"></i>
@@ -305,6 +305,69 @@
                     <p>Мы обучаем созданию цифровых активов и автоматизированных воронок, которые работают на базе наших
                         технологических решений, требуя минимального контроля.</p>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact__grid">
+            <div class="contact__info reveal">
+                <h2 class="section-title">Готовы к <br> <span class="text-accent">трансформации?</span></h2>
+                <p class="section-subtitle">Оставьте заявку, и наш специалист свяжется с вами для бесплатной
+                    консультации по всем вопросам платформы
+                    <?= $domainTitle ?>.
+                </p>
+
+                <div class="contact__details">
+                    <div class="contact__method">
+                        <i data-lucide="phone-call"></i>
+                        <div>
+                            <span>Телефон</span>
+                            <p>+33 1 89 48 09 83</p>
+                        </div>
+                    </div>
+                    <div class="contact__method">
+                        <i data-lucide="mail"></i>
+                        <div>
+                            <span>Email</span>
+                            <p>support@
+                                <?= $fullDomain ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact__form-wrapper">
+                <form id="main-form" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Электронная почта" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" id="phone-input" placeholder="Телефон (только цифры)"
+                            pattern="[0-9+]*" required>
+                    </div>
+
+                    <div class="form-captcha">
+                        <label for="captcha">Сколько будет <span id="captcha-task">...</span>?</label>
+                        <input type="number" id="captcha-input" placeholder="Ответ" required>
+                    </div>
+
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="agree" required checked>
+                        <label for="agree">Я согласен с <a href="./privacy.php">политикой конфиденциальности</a></label>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full">Отправить запрос</button>
+
+
+                </form>                    <div id="form-success" class="form-message success">
+                        <i data-lucide="check-circle"></i> Сообщение успешно отправлено!
+                    </div>
             </div>
         </div>
     </div>
@@ -369,7 +432,27 @@
             </p>
         </div>
     </footer>
+<div class="mobile-overlay">
+    <nav class="mobile-nav">
+        <ul class="mobile-nav__list">
+            <li><a href="./#hero" class="mobile-nav__link">Главная</a></li>
+            <li><a href="./#about" class="mobile-nav__link">О платформе</a></li>
+            <li><a href="./#courses" class="mobile-nav__link">Курсы</a></li>
+            <li><a href="./#tech" class="mobile-nav__link">Технологии</a></li>
+            <li><a href="./#faq" class="mobile-nav__link">FAQ</a></li>
+            <li><a href="./#contact" class="btn btn--primary">Начать сейчас</a></li>
+        </ul>
+    </nav>
+</div>
 
+<div id="cookie-popup" class="cookie-popup">
+    <div class="cookie-popup__content">
+        <i data-lucide="cookie" class="cookie-popup__icon"></i>
+        <p>Этот сайт использует cookies для улучшения работы. Подробнее — в нашей <a href="./cookies.php">Cookie
+                политике</a>.</p>
+        <button id="cookie-accept" class="btn btn--header">Принять</button>
+    </div>
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
